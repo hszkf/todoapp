@@ -1,4 +1,3 @@
-import { eq, and, lt, sql } from 'drizzle-orm';
 import { db, todos } from '@/db';
 
 export interface TodoStats {

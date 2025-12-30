@@ -16,4 +16,4 @@ export const db = drizzle(sqlite, { schema });
 // Re-export schema types and tables
 export * from './schema';
 
-console.log(`SQLite database initialized at: ${dbPath}`);
+// Database initialized at dbPath

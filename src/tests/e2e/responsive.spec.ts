@@ -16,7 +16,6 @@ test.describe('Mobile Responsive Design', () => {
 
   test('should hide sidebar by default on mobile', async ({ page }) => {
     // Sidebar should be hidden (translated off-screen)
-    const sidebar = page.locator('aside');
     // Check that sidebar text is not visible
     await expect(page.getByText('All Categories')).not.toBeVisible();
   });
@@ -60,8 +59,7 @@ test.describe('Mobile Responsive Design', () => {
 
   test('should hide Add Todo text on small screens', async ({ page }) => {
     // On small screens, the "Add Todo" text is hidden, only icon shows
-    const addTodoText = page.locator('button span.hidden');
-    // The text should have 'hidden' class on small screens
+    // The text should have 'hidden' class on small screens, only plus icon visible
     await expect(page.getByRole('button').filter({ has: page.locator('svg.lucide-plus') })).toBeVisible();
   });
 

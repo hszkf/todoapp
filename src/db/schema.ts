@@ -1,9 +1,10 @@
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 import { relations } from 'drizzle-orm';
+import { randomUUID } from 'crypto';
 
 // Categories table
 export const categories = sqliteTable('categories', {
-  id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
+  id: text('id').primaryKey().$defaultFn(() => randomUUID()),
   name: text('name').notNull(),
   color: text('color').default('#6366f1').notNull(),
   createdAt: text('created_at').$defaultFn(() => new Date().toISOString()).notNull(),
@@ -11,7 +12,7 @@ export const categories = sqliteTable('categories', {
 
 // Todos table
 export const todos = sqliteTable('todos', {
-  id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
+  id: text('id').primaryKey().$defaultFn(() => randomUUID()),
   title: text('title').notNull(),
   description: text('description'),
   completed: integer('completed', { mode: 'boolean' }).default(false).notNull(),

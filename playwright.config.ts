@@ -36,16 +36,16 @@ export default defineConfig({
   ],
   webServer: [
     {
-      command: 'bun run --bun src/api/index.ts',
+      command: 'bun run start',
       url: 'http://localhost:3020/health',
       reuseExistingServer: !process.env.CI,
-      timeout: 30000,
+      timeout: 60000,
     },
     {
       command: 'bun run dev',
       url: 'http://localhost:3021',
       reuseExistingServer: !process.env.CI,
-      timeout: 30000,
+      timeout: 60000,
     },
   ],
 });

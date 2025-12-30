@@ -127,6 +127,9 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
+      - name: Setup database
+        run: bun run db:push
+
       - name: Run E2E tests
         run: bun run test:e2e --project=chromium
         env:

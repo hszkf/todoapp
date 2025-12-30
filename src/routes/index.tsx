@@ -4,6 +4,7 @@ import { Plus, Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { TodoList, TodoForm, TodoFilters, TodoSearch } from '@/features/todos/components';
 import { CategoryList, CategoryForm } from '@/features/categories/components';
+import { StatsCard } from '@/features/stats/components/StatsCard';
 import type { TodoFilter } from '@/features/todos/types';
 
 export const Route = createFileRoute('/')({
@@ -55,8 +56,8 @@ function HomePage() {
       {/* Sidebar */}
       <aside
         className={cn(
-          'fixed inset-y-0 left-0 z-50 w-64 transform bg-background border-r pt-14 transition-transform duration-200 lg:relative lg:translate-x-0 lg:pt-0',
-          isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+          'fixed inset-y-0 left-0 z-50 w-64 transform bg-background border-r pt-14 transition-transform duration-200 lg:relative lg:pt-0',
+          isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         )}
       >
         <div className="flex h-full flex-col p-4">
@@ -99,6 +100,9 @@ function HomePage() {
                 <span className="hidden sm:inline">Add Todo</span>
               </button>
             </div>
+
+            {/* Statistics */}
+            <StatsCard />
 
             {/* Search and Filters */}
             <div className="mb-6 space-y-4">

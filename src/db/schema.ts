@@ -1,37 +1,27 @@
-import {
-  pgTable,
-  pgEnum,
-  uuid,
-  text,
-  boolean,
-  timestamp,
-} from 'drizzle-orm/pg-core';
+import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 import { relations } from 'drizzle-orm';
 
-// Priority enum
-export const priorityEnum = pgEnum('priority', ['low', 'medium', 'high']);
-
 // Categories table
-export const categories = pgTable('categories', {
-  id: uuid('id').primaryKey().defaultRandom(),
+export const categories = sqliteTable('categories', {
+  id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
   name: text('name').notNull(),
   color: text('color').default('#6366f1').notNull(),
-  createdAt: timestamp('created_at').defaultNow().notNull(),
+  createdAt: text('created_at').$defaultFn(() => new Date().toISOString()).notNull(),
 });
 
 // Todos table
-export const todos = pgTable('todos', {
-  id: uuid('id').primaryKey().defaultRandom(),
+export const todos = sqliteTable('todos', {
+  id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
   title: text('title').notNull(),
   description: text('description'),
-  completed: boolean('completed').default(false).notNull(),
-  priority: priorityEnum('priority').default('medium').notNull(),
-  dueDate: timestamp('due_date'),
-  categoryId: uuid('category_id').references(() => categories.id, {
+  completed: integer('completed', { mode: 'boolean' }).default(false).notNull(),
+  priority: text('priority', { enum: ['low', 'medium', 'high'] }).default('medium').notNull(),
+  dueDate: text('due_date'),
+  categoryId: text('category_id').references(() => categories.id, {
     onDelete: 'set null',
   }),
-  createdAt: timestamp('created_at').defaultNow().notNull(),
-  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+  createdAt: text('created_at').$defaultFn(() => new Date().toISOString()).notNull(),
+  updatedAt: text('updated_at').$defaultFn(() => new Date().toISOString()).notNull(),
 });
 
 // Relations
@@ -51,4 +41,4 @@ export type Category = typeof categories.$inferSelect;
 export type NewCategory = typeof categories.$inferInsert;
 export type Todo = typeof todos.$inferSelect;
 export type NewTodo = typeof todos.$inferInsert;
-export type Priority = (typeof priorityEnum.enumValues)[number];
+export type Priority = 'low' | 'medium' | 'high';

@@ -39,11 +39,11 @@ test.describe('Todo Filters', () => {
   });
 
   test('should display priority dropdown', async ({ page }) => {
-    await expect(page.getByRole('combobox')).toBeVisible();
+    await expect(page.locator('select')).toBeVisible();
   });
 
   test('should have All Priorities as default', async ({ page }) => {
-    await expect(page.getByRole('combobox')).toHaveValue('all');
+    await expect(page.locator('select')).toHaveValue('all');
   });
 
   test('should show clear filters button when filters applied', async ({ page }) => {
@@ -66,22 +66,25 @@ test.describe('Priority Filter', () => {
   });
 
   test('should have priority options in dropdown', async ({ page }) => {
-    const select = page.getByRole('combobox');
-    await select.click();
+    // Native select element - check options exist via value selection
+    const select = page.locator('select');
+    await expect(select).toBeVisible();
 
-    await expect(page.getByRole('option', { name: 'All Priorities' })).toBeVisible();
-    await expect(page.getByRole('option', { name: 'High' })).toBeVisible();
-    await expect(page.getByRole('option', { name: 'Medium' })).toBeVisible();
-    await expect(page.getByRole('option', { name: 'Low' })).toBeVisible();
+    // Verify options by checking the select has expected values
+    const options = await select.locator('option').allTextContents();
+    expect(options).toContain('All Priorities');
+    expect(options).toContain('High');
+    expect(options).toContain('Medium');
+    expect(options).toContain('Low');
   });
 
   test('should select high priority', async ({ page }) => {
-    await page.getByRole('combobox').selectOption('high');
-    await expect(page.getByRole('combobox')).toHaveValue('high');
+    await page.locator('select').selectOption('high');
+    await expect(page.locator('select')).toHaveValue('high');
   });
 
   test('should show clear filters after priority selection', async ({ page }) => {
-    await page.getByRole('combobox').selectOption('high');
+    await page.locator('select').selectOption('high');
     await expect(page.getByText('Clear filters')).toBeVisible();
   });
 });

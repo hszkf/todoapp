@@ -4,6 +4,7 @@ import { logger } from 'hono/logger';
 import { secureHeaders } from 'hono/secure-headers';
 import { todosRoute } from './routes/todos';
 import { categoriesRoute } from './routes/categories';
+import { statsRoute } from './routes/stats';
 import { errorHandler } from './middleware/error';
 
 const app = new Hono();
@@ -24,6 +25,7 @@ app.get('/health', (c) =>
 // API routes
 app.route('/api/todos', todosRoute);
 app.route('/api/categories', categoriesRoute);
+app.route('/api/stats', statsRoute);
 
 // Error handler
 app.onError(errorHandler);

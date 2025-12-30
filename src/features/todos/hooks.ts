@@ -37,6 +37,7 @@ export const useCreateTodo = () => {
     mutationFn: (data: CreateTodoInput) => todosApi.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: todoKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: ['stats'] });
     },
   });
 };
@@ -49,6 +50,7 @@ export const useUpdateTodo = () => {
       todosApi.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: todoKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: ['stats'] });
     },
   });
 };
@@ -60,6 +62,7 @@ export const useToggleTodo = () => {
     mutationFn: (id: string) => todosApi.toggle(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: todoKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: ['stats'] });
     },
   });
 };
@@ -71,6 +74,7 @@ export const useDeleteTodo = () => {
     mutationFn: (id: string) => todosApi.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: todoKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: ['stats'] });
     },
   });
 };

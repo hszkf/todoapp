@@ -152,6 +152,184 @@ Reference these skills for patterns and guidelines:
 - E2E tests: `src/tests/e2e/`
 - MSW for API mocking
 
+---
+
+## Test Instructions
+
+### Running All Tests
+
+```bash
+# Run all backend tests (Bun test)
+bun test
+
+# Run backend tests for specific files
+bun test src/api/**/*.test.ts
+
+# Run frontend tests (Vitest)
+bun run test:frontend
+
+# Run E2E tests (Playwright)
+bun run test:e2e
+
+# Run E2E tests with specific browser
+bun run test:e2e --project=chromium
+bun run test:e2e --project=firefox
+bun run test:e2e --project=webkit
+```
+
+### Test Structure
+
+```
+src/
+├── api/
+│   ├── routes/
+│   │   ├── todos.test.ts        # Backend route tests
+│   │   └── categories.test.ts
+│   └── services/
+│       ├── todo.service.test.ts
+│       └── category.service.test.ts
+├── features/
+│   ├── todos/
+│   │   └── components/*.test.tsx  # Frontend component tests
+│   └── categories/
+│       └── components/*.test.tsx
+└── tests/
+    ├── e2e/                       # Playwright E2E tests
+    │   ├── todos.spec.ts
+    │   ├── categories.spec.ts
+    │   ├── filters.spec.ts
+    │   ├── search.spec.ts
+    │   ├── theme.spec.ts
+    │   ├── responsive.spec.ts
+    │   └── accessibility.spec.ts
+    └── mocks/
+        ├── handlers.ts            # MSW mock handlers
+        └── server.ts
+```
+
+### Backend Tests (Bun test)
+
+```bash
+# Run all backend tests
+bun test
+
+# Run with coverage
+bun test --coverage
+
+# Run specific test file
+bun test src/api/routes/todos.test.ts
+
+# Run tests matching pattern
+bun test --test-name-pattern "should create todo"
+```
+
+### Frontend Tests (Vitest)
+
+```bash
+# Run frontend component tests
+bun run test:frontend
+
+# Run with watch mode
+bun run test:frontend -- --watch
+
+# Run with UI
+bun run test:frontend -- --ui
+
+# Run specific test file
+bun run test:frontend -- src/features/todos/components/TodoItem.test.tsx
+```
+
+### E2E Tests (Playwright)
+
+```bash
+# Run all E2E tests
+bun run test:e2e
+
+# Run specific browser
+bun run test:e2e --project=chromium
+
+# Run specific test file
+bun run test:e2e src/tests/e2e/todos.spec.ts
+
+# Run with UI mode (interactive)
+bun run test:e2e --ui
+
+# Run with headed browser
+bun run test:e2e --headed
+
+# Generate test report
+bun run test:e2e --reporter=html
+npx playwright show-report
+```
+
+### CI/CD Integration
+
+Tests run automatically on GitHub Actions for:
+- Push to `main` or `develop` branches
+- Pull requests to `main` or `develop`
+
+CI Pipeline stages:
+1. **Lint** - ESLint checks
+2. **TypeCheck** - TypeScript compilation
+3. **Unit Tests** - Backend tests (Bun test)
+4. **Frontend Tests** - Component tests (Vitest)
+5. **Build** - Production build
+6. **E2E Tests** - Playwright tests (Chromium)
+
+### Test Coverage Requirements
+
+| Type | Minimum Coverage |
+|------|-----------------|
+| Backend (services) | 80% |
+| Backend (routes) | 70% |
+| Frontend (components) | 60% |
+| E2E (critical paths) | Full coverage |
+
+### Writing New Tests
+
+**Backend Route Test:**
+```typescript
+import { describe, it, expect } from 'bun:test';
+import app from '../index';
+
+describe('GET /api/todos', () => {
+  it('should return todos list', async () => {
+    const res = await app.request('/api/todos');
+    expect(res.status).toBe(200);
+    const data = await res.json();
+    expect(data).toHaveProperty('data');
+  });
+});
+```
+
+**Frontend Component Test:**
+```typescript
+import { render, screen } from '@testing-library/react';
+import { TodoItem } from './TodoItem';
+
+describe('TodoItem', () => {
+  it('should display todo title', () => {
+    render(<TodoItem todo={{ id: '1', title: 'Test', completed: false }} />);
+    expect(screen.getByText('Test')).toBeInTheDocument();
+  });
+});
+```
+
+**E2E Test:**
+```typescript
+import { test, expect } from '@playwright/test';
+
+test.describe('Todo CRUD', () => {
+  test('should create new todo', async ({ page }) => {
+    await page.goto('/');
+    await page.getByRole('button', { name: /Add Todo/i }).click();
+    await page.getByPlaceholder('What needs to be done?').fill('New Todo');
+    await page.getByRole('button', { name: /^Add Todo$/i }).click();
+    await expect(page.getByText('New Todo')).toBeVisible();
+  });
+});
+```
+
 ### Git
 - Branches: `feature/`, `fix/`, `chore/`
 - Conventional commits: `feat:`, `fix:`, `docs:`, `chore:`

@@ -1,22 +1,19 @@
-import { drizzle } from 'drizzle-orm/postgres-js';
-import postgres from 'postgres';
+import { drizzle } from 'drizzle-orm/bun-sqlite';
+import { Database } from 'bun:sqlite';
+import { join } from 'path';
 import * as schema from './schema';
 
-const connectionString = process.env.DATABASE_URL;
+// Get the project root directory
+const projectRoot = join(import.meta.dir, '..', '..');
 
-if (!connectionString) {
-  throw new Error('DATABASE_URL environment variable is not set');
-}
+// Create SQLite database (file-based for persistence)
+const dbPath = join(projectRoot, 'todos.db');
+const sqlite = new Database(dbPath);
 
-// Create postgres client
-const client = postgres(connectionString, {
-  max: 10, // Maximum number of connections
-  idle_timeout: 20, // Close idle connections after 20 seconds
-  connect_timeout: 10, // Connection timeout in seconds
-});
+// Create drizzle database instance
+export const db = drizzle(sqlite, { schema });
 
-// Create drizzle instance with schema
-export const db = drizzle(client, { schema });
-
-// Export schema for convenience
+// Re-export schema types and tables
 export * from './schema';
+
+console.log(`SQLite database initialized at: ${dbPath}`);

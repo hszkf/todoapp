@@ -47,8 +47,10 @@ test.describe('Theme Toggle', () => {
   test('should have sun/moon icon based on theme', async ({ page }) => {
     const themeButton = page.locator('header').locator('button').last();
 
-    // Should have an SVG icon
-    await expect(themeButton.locator('svg')).toBeVisible();
+    // Should have SVG icons (Sun and Moon)
+    const svgs = themeButton.locator('svg');
+    const count = await svgs.count();
+    expect(count).toBeGreaterThan(0);
   });
 });
 

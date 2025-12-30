@@ -8,7 +8,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL: 'http://localhost:3021',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
   },
@@ -34,9 +34,18 @@ export default defineConfig({
       use: { ...devices['iPhone 12'] },
     },
   ],
-  webServer: {
-    command: 'bun run dev',
-    url: 'http://localhost:3000',
-    reuseExistingServer: !process.env.CI,
-  },
+  webServer: [
+    {
+      command: 'bun run --bun src/api/index.ts',
+      url: 'http://localhost:3020/health',
+      reuseExistingServer: !process.env.CI,
+      timeout: 30000,
+    },
+    {
+      command: 'bun run dev',
+      url: 'http://localhost:3021',
+      reuseExistingServer: !process.env.CI,
+      timeout: 30000,
+    },
+  ],
 });

@@ -1,4 +1,4 @@
-import { eq, and, ilike, desc } from 'drizzle-orm';
+import { eq, and, like, desc } from 'drizzle-orm';
 import { db, todos, type Todo, type NewTodo } from '@/db';
 import type {
   CreateTodoInput,
@@ -27,9 +27,9 @@ export const todoService = {
       conditions.push(eq(todos.categoryId, filter.categoryId));
     }
 
-    // Search by title
+    // Search by title (use 'like' for SQLite instead of 'ilike')
     if (filter.search) {
-      conditions.push(ilike(todos.title, `%${filter.search}%`));
+      conditions.push(like(todos.title, `%${filter.search}%`));
     }
 
     if (conditions.length === 0) {
@@ -57,7 +57,7 @@ export const todoService = {
       title: data.title,
       description: data.description,
       priority: data.priority,
-      dueDate: data.dueDate ? new Date(data.dueDate) : undefined,
+      dueDate: data.dueDate || null,
       categoryId: data.categoryId,
     };
 
@@ -66,8 +66,8 @@ export const todoService = {
   },
 
   async update(id: string, data: UpdateTodoInput): Promise<Todo | undefined> {
-    const updateData: Partial<NewTodo> & { updatedAt: Date } = {
-      updatedAt: new Date(),
+    const updateData: Partial<NewTodo> & { updatedAt: string } = {
+      updatedAt: new Date().toISOString(),
     };
 
     if (data.title !== undefined) updateData.title = data.title;
@@ -75,7 +75,7 @@ export const todoService = {
     if (data.completed !== undefined) updateData.completed = data.completed;
     if (data.priority !== undefined) updateData.priority = data.priority;
     if (data.dueDate !== undefined) {
-      updateData.dueDate = data.dueDate ? new Date(data.dueDate) : null;
+      updateData.dueDate = data.dueDate || null;
     }
     if (data.categoryId !== undefined) updateData.categoryId = data.categoryId;
 

@@ -1,4 +1,4 @@
-import { test, expect, devices } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 
 test.describe('Mobile Responsive Design', () => {
   test.use({ viewport: { width: 375, height: 667 } }); // iPhone SE

@@ -1,6 +1,4 @@
-import { describe, it, expect, beforeEach, mock, spyOn } from 'bun:test';
-import * as todoService from './todo.service';
-import { db } from '@/db';
+import { describe, it, expect, mock } from 'bun:test';
 
 // Mock the database
 mock.module('@/db', () => ({

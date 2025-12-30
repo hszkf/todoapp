@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@/tests/test-utils';
+import { render, screen, fireEvent } from '@/tests/test-utils';
 import { TodoSearch } from './TodoSearch';
 
 describe('TodoSearch', () => {

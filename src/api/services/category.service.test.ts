@@ -79,7 +79,6 @@ describe('Category Service', () => {
     });
 
     it('should update category color', () => {
-      const id = 'cat-123';
       const updates = { color: '#22c55e' };
 
       expect(updates.color).toBe('#22c55e');

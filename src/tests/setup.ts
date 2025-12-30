@@ -1,13 +1,28 @@
-import '@testing-library/jest-dom';
+import '@testing-library/jest-dom/vitest';
 import { beforeAll, afterEach, afterAll } from 'vitest';
+import { cleanup } from '@testing-library/react';
+
+// Cleanup after each test
+afterEach(() => {
+  cleanup();
+});
 
 // Global test setup
 beforeAll(() => {
-  // Setup before all tests
-});
-
-afterEach(() => {
-  // Cleanup after each test
+  // Mock window.matchMedia
+  Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    value: (query: string) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: () => {},
+      removeListener: () => {},
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      dispatchEvent: () => false,
+    }),
+  });
 });
 
 afterAll(() => {

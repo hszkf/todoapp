@@ -9,7 +9,7 @@ export const createCategorySchema = z.object({
   color: z
     .string()
     .regex(hexColorRegex, 'Invalid hex color format')
-    .default('#6366f1'),
+    .optional(),
 });
 
 // Update category schema
@@ -18,6 +18,6 @@ export const updateCategorySchema = z.object({
   color: z.string().regex(hexColorRegex).optional(),
 });
 
-// Type exports
-export type CreateCategoryInput = z.infer<typeof createCategorySchema>;
-export type UpdateCategoryInput = z.infer<typeof updateCategorySchema>;
+// Type exports - use input type for what API expects
+export type CreateCategoryInput = z.input<typeof createCategorySchema>;
+export type UpdateCategoryInput = z.input<typeof updateCategorySchema>;

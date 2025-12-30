@@ -21,9 +21,9 @@ export const errorHandler = (err: Error, c: Context) => {
     return c.json(
       {
         error: 'Validation failed',
-        details: err.errors.map((e) => ({
-          path: e.path.join('.'),
-          message: e.message,
+        details: err.issues.map((issue) => ({
+          path: issue.path.join('.'),
+          message: issue.message,
         })),
       },
       400

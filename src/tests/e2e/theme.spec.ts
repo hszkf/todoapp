@@ -26,7 +26,7 @@ test.describe('Theme Toggle', () => {
     expect(classAfterClick).toBeDefined();
   });
 
-  test('should persist theme preference', async ({ page, context }) => {
+  test('should persist theme preference', async ({ page }) => {
     const themeButton = page.locator('header').locator('button').last();
 
     // Click to change theme

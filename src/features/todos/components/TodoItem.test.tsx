@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent } from '@/tests/test-utils';
+import { render, screen } from '@/tests/test-utils';
 import { TodoItem } from './TodoItem';
 import type { Todo } from '@/db/schema';
 

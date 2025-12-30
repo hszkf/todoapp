@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'bun:test';
 import { Hono } from 'hono';
 import { HTTPException } from 'hono/http-exception';
-import { ZodError, z } from 'zod';
+import { z } from 'zod';
 import { errorHandler } from './error';
 
 // Create a test app with error handler

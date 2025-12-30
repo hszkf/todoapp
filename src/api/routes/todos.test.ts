@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll } from 'bun:test';
+import { describe, it, expect } from 'bun:test';
 import { Hono } from 'hono';
 
 // Create a test app that mimics the structure
@@ -216,7 +216,7 @@ describe('Todo Routes', () => {
 
   describe('PATCH /api/todos/:id', () => {
     it('should update a todo', async () => {
-      const { app, todos } = createTestApp();
+      const { app } = createTestApp();
 
       // Create a todo
       const createRes = await app.request('/api/todos', {

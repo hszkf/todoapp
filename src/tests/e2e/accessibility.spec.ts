@@ -130,9 +130,11 @@ test.describe('Screen Reader Accessibility', () => {
 
   test('should have alt text or aria-labels for icons', async ({ page }) => {
     // Delete buttons should have title/aria-label
-    const deleteButtons = page.locator('[title="Delete todo"], [title="Delete category"]');
     // These may not exist if no todos/categories
     // But the structure should support them
+    const locator = page.locator('[title="Delete todo"], [title="Delete category"]');
+    // Verify the selector pattern is valid (won't throw)
+    await locator.count();
   });
 
   test('should announce filter changes', async ({ page }) => {
